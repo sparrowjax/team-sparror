@@ -229,6 +229,62 @@
             transition: color 0.3s; font-size: 14px; text-transform: uppercase;
         }
         footer .links a:hover { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+/* ========================================= */
+        /* 📱 ADAPTACIÓN PARA CELULARES (RESPONSIVE) */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            /* 1. Arregla la barra de navegación para que no se corten los botones */
+            nav {
+                padding: 15px 10px;
+                flex-direction: column; /* Pone el logo arriba y los botones abajo */
+                gap: 12px;
+            }
+            nav .logo {
+                font-size: 22px;
+            }
+            nav ul {
+                justify-content: center;
+                width: 100%;
+                gap: 10px;
+            }
+            nav ul li button {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+            
+            /* 2. Ajusta el espacio porque la barra ahora es más alta */
+            main {
+                padding-top: 140px;
+            }
+
+            /* 3. Achica los textos grandes del inicio */
+            .hero-box {
+                padding: 30px 20px;
+            }
+            .hero-box h1 {
+                font-size: 30px;
+            }
+            .section-title {
+                font-size: 26px;
+            }
+
+            /* 4. Tablas deslizables: Vital para que las columnas no rompan la pantalla */
+            .tabla-modelos {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap; /* Evita que el texto de la tabla se amontone */
+                width: 100%;
+            }
+            
+            /* 5. Acomoda los botones de las marcas para que entren 2 por fila */
+            .model-btn {
+                padding: 12px 15px;
+                font-size: 15px;
+                width: 45%; 
+                text-align: center;
+                flex-grow: 1;
+            }
+        }
     </style>
 </head>
 <body>
