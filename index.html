@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Sparror | Software & Repair</title>
+    <style>
+        /* Configuraciones Base */
+        :root {
+            --bg-color: #0b0f19;
+            --surface: rgba(20, 25, 40, 0.85); 
+            --cyan: #00ffff;
+            --xiaomi-orange: #ff6700;
+            --honor-blue: #00aaff; 
+            --moto-blue: #3b82f6; 
+            --zte-green: #10b981;
+            --oppo-green: #22c55e;
+            --tecno-yellow: #facc15;
+            --text-main: #ffffff;
+            --text-muted: #a0aec0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            background-image: url('fondo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow-x: hidden; 
+        }
+
+        /* BARRA DE NAVEGACIÓN FIJA */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(5, 8, 15, 0.95); backdrop-filter: blur(15px);
+            padding: 20px 50px; display: flex; justify-content: space-between;
+            align-items: center; z-index: 1000;
+            border-bottom: 2px solid var(--cyan); box-shadow: 0 4px 30px rgba(0, 255, 255, 0.2);
+        }
+        nav .logo { font-size: 26px; font-weight: 900; color: var(--cyan); letter-spacing: 3px; text-shadow: 0 0 15px rgba(0,255,255,0.6); }
+        nav ul { display: flex; list-style: none; gap: 15px; }
+        
+        nav ul li button {
+            background: transparent; border: 1px solid transparent;
+            color: var(--text-main); font-weight: bold; font-size: 15px; 
+            text-transform: uppercase; padding: 10px 20px; 
+            border-radius: 8px; cursor: pointer; transition: all 0.3s ease;
+        }
+        nav ul li button:hover, nav ul li button.activo {
+            background: var(--cyan); color: #000; border: 1px solid var(--cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+        }
+
+        main { padding-top: 100px; min-height: calc(100vh - 80px); }
+
+        /* SECCIONES ESTILO "PÁGINAS APARTE" */
+        .seccion {
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            padding: 40px 10%; animation: aparecer 0.4s ease-in-out;
+        }
+        .seccion.activa { display: flex; }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 36px; margin-bottom: 40px; color: var(--cyan);
+            text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); text-align: center;
+        }
+        .title-xiaomi { color: var(--xiaomi-orange); text-shadow: 0 0 10px rgba(255, 103, 0, 0.5); }
+        .title-honor { color: var(--honor-blue); text-shadow: 0 0 10px rgba(0, 170, 255, 0.5); }
+        .title-moto { color: var(--moto-blue); text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+        .title-zte { color: var(--zte-green); text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+        .title-oppo { color: var(--oppo-green); text-shadow: 0 0 10px rgba(34, 197, 94, 0.5); }
+        .title-tecno { color: var(--tecno-yellow); text-shadow: 0 0 10px rgba(250, 204, 21, 0.5); }
+
+        /* INICIO (Hero Section) */
+        .hero-box {
+            background: var(--surface); backdrop-filter: blur(10px);
+            padding: 50px; border-radius: 20px; border: 1px solid rgba(0, 255, 255, 0.2);
+            max-width: 800px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .hero-box h1 { font-size: 45px; margin-bottom: 15px; }
+        .hero-box .date-badge {
+            display: inline-block; background: var(--cyan); color: #000;
+            padding: 8px 20px; border-radius: 30px; font-weight: bold; margin-bottom: 25px;
+        }
+        .hero-box p { font-size: 18px; line-height: 1.6; color: var(--text-muted); margin-bottom: 15px; }
+
+        /* HERRAMIENTAS & MODELOS GRIDS */
+        .tools-grid, .models-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; max-width: 1000px; width: 100%; }
+        
+        .tool-card {
+            background: var(--surface); padding: 35px; border-radius: 15px;
+            text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 280px;
+            transition: all 0.3s; backdrop-filter: blur(10px); cursor: pointer;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px) scale(1.02); border-color: var(--cyan);
+            box-shadow: 0 15px 30px rgba(0, 255, 255, 0.2);
+        }
+        .tool-card h3 { color: var(--cyan); font-size: 22px; }
+        .tool-card p { margin-top: 15px; font-size: 15px; color: var(--text-main); }
+
+        .model-btn {
+            background: rgba(0,0,0,0.6); border: 2px solid rgba(0, 255, 255, 0.3);
+            color: white; padding: 15px 35px; border-radius: 30px;
+            font-size: 18px; font-weight: bold; transition: all 0.3s;
+            backdrop-filter: blur(5px); text-transform: uppercase; cursor: pointer;
+        }
+        .model-btn:hover { background: var(--cyan); color: #000; border-color: var(--cyan); box-shadow: 0 0 20px var(--cyan); transform: scale(1.05); }
+        .model-btn.btn-orange:hover { background: var(--xiaomi-orange); border-color: var(--xiaomi-orange); box-shadow: 0 0 20px var(--xiaomi-orange); color: #000; }
+        .model-btn.btn-blue:hover { background: var(--honor-blue); border-color: var(--honor-blue); box-shadow: 0 0 20px var(--honor-blue); color: #000;}
+        .model-btn.btn-moto:hover { background: var(--moto-blue); border-color: var(--moto-blue); box-shadow: 0 0 20px var(--moto-blue); color: #fff;}
+        .model-btn.btn-zte:hover { background: var(--zte-green); border-color: var(--zte-green); box-shadow: 0 0 20px var(--zte-green); color: #000;}
+        .model-btn.btn-oppo:hover { background: var(--oppo-green); border-color: var(--oppo-green); box-shadow: 0 0 20px var(--oppo-green); color: #000;}
+        .model-btn.btn-tecno:hover { background: var(--tecno-yellow); border-color: var(--tecno-yellow); box-shadow: 0 0 20px var(--tecno-yellow); color: #000;}
+
+        /* DISEÑO DE TABLA Y ALERTAS MEJORADAS */
+        .btn-back {
+            background: transparent; color: var(--cyan); border: 1px solid var(--cyan);
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px;
+            font-weight: bold; transition: all 0.3s; font-size: 15px; align-self: flex-start;
+        }
+        .btn-back:hover { background: var(--cyan); color: #000; box-shadow: 0 0 15px var(--cyan); }
+        .btn-back.back-orange { color: var(--xiaomi-orange); border-color: var(--xiaomi-orange); }
+        .btn-back.back-orange:hover { background: var(--xiaomi-orange); box-shadow: 0 0 15px var(--xiaomi-orange); color: #000; }
+        .btn-back.back-blue { color: var(--honor-blue); border-color: var(--honor-blue); }
+        .btn-back.back-blue:hover { background: var(--honor-blue); box-shadow: 0 0 15px var(--honor-blue); color: #000; }
+        .btn-back.back-moto { color: var(--moto-blue); border-color: var(--moto-blue); }
+        .btn-back.back-moto:hover { background: var(--moto-blue); box-shadow: 0 0 15px var(--moto-blue); color: #fff; }
+        .btn-back.back-zte { color: var(--zte-green); border-color: var(--zte-green); }
+        .btn-back.back-zte:hover { background: var(--zte-green); box-shadow: 0 0 15px var(--zte-green); color: #000; }
+        .btn-back.back-oppo { color: var(--oppo-green); border-color: var(--oppo-green); }
+        .btn-back.back-oppo:hover { background: var(--oppo-green); box-shadow: 0 0 15px var(--oppo-green); color: #000; }
+        .btn-back.back-tecno { color: var(--tecno-yellow); border-color: var(--tecno-yellow); }
+        .btn-back.back-tecno:hover { background: var(--tecno-yellow); box-shadow: 0 0 15px var(--tecno-yellow); color: #000; }
+        
+        .alerta-roja {
+            background: rgba(30, 0, 0, 0.7); border-left: 5px solid #ff3333;
+            color: #ff6666; padding: 20px; border-radius: 8px; width: 100%; max-width: 800px;
+            margin-bottom: 20px; text-align: center; font-weight: 800; line-height: 1.6; font-size: 16px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9); box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        
+        .alerta-info {
+            background: rgba(0, 30, 40, 0.7); border-left: 5px solid var(--cyan);
+            color: #ffffff; padding: 20px; border-radius: 8px; width: 100%; max-width: 800px;
+            margin-bottom: 20px; text-align: center; font-weight: 700; line-height: 1.6; font-size: 16px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9); box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .alerta-xiaomi { background: rgba(40, 15, 0, 0.7); border-left: 5px solid var(--xiaomi-orange); }
+        .alerta-xiaomi span { color: var(--xiaomi-orange); font-size: 18px; font-weight: 900; }
+        .alerta-honor { background: rgba(0, 20, 40, 0.7); border-left: 5px solid var(--honor-blue); }
+        .alerta-moto { background: rgba(0, 20, 50, 0.7); border-left: 5px solid var(--moto-blue); }
+        .alerta-moto span { color: var(--moto-blue); font-size: 18px; font-weight: 900; }
+        .alerta-zte { background: rgba(0, 40, 20, 0.7); border-left: 5px solid var(--zte-green); }
+        .alerta-oppo { background: rgba(0, 40, 20, 0.7); border-left: 5px solid var(--oppo-green); }
+        .alerta-tecno { background: rgba(40, 35, 0, 0.7); border-left: 5px solid var(--tecno-yellow); }
+
+        /* Buscador */
+        .buscador-container { width: 100%; max-width: 800px; margin-bottom: 20px; }
+        .buscador-container input {
+            width: 100%; padding: 15px 20px; border-radius: 30px;
+            background: rgba(0,0,0,0.8); border: 2px solid rgba(0, 255, 255, 0.5);
+            color: white; font-size: 16px; outline: none; transition: 0.3s; font-weight: bold;
+        }
+        .buscador-container input:focus { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0,255,255,0.4); }
+        .buscador-container input.input-xiaomi:focus { border-color: var(--xiaomi-orange); box-shadow: 0 0 15px rgba(255,103,0,0.4); }
+        .buscador-container input.input-honor:focus { border-color: var(--honor-blue); box-shadow: 0 0 15px rgba(0,170,255,0.4); }
+        .buscador-container input.input-moto:focus { border-color: var(--moto-blue); box-shadow: 0 0 15px rgba(59,130,246,0.4); }
+        .buscador-container input.input-zte:focus { border-color: var(--zte-green); box-shadow: 0 0 15px rgba(16,185,129,0.4); }
+        .buscador-container input.input-oppo:focus { border-color: var(--oppo-green); box-shadow: 0 0 15px rgba(34,197,94,0.4); }
+        .buscador-container input.input-tecno:focus { border-color: var(--tecno-yellow); box-shadow: 0 0 15px rgba(250,204,21,0.4); }
+
+        .tabla-modelos {
+            width: 100%; max-width: 800px; border-collapse: collapse;
+            background: rgba(20, 25, 40, 0.85); backdrop-filter: blur(10px);
+            border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid rgba(0, 255, 255, 0.3); margin-bottom: 30px;
+        }
+        .tabla-xiaomi { border-color: rgba(255, 103, 0, 0.3); }
+        .tabla-honor { border-color: rgba(0, 170, 255, 0.3); }
+        .tabla-moto { border-color: rgba(59, 130, 246, 0.3); }
+        .tabla-zte { border-color: rgba(16, 185, 129, 0.3); }
+        .tabla-oppo { border-color: rgba(34, 197, 94, 0.3); }
+        .tabla-tecno { border-color: rgba(250, 204, 21, 0.3); }
+        
+        .tabla-modelos th {
+            background: rgba(0, 255, 255, 0.2); color: var(--cyan);
+            padding: 15px; font-size: 18px; text-transform: uppercase; border-bottom: 2px solid var(--cyan);
+        }
+        .tabla-xiaomi th { background: rgba(255, 103, 0, 0.2); color: var(--xiaomi-orange); border-bottom: 2px solid var(--xiaomi-orange); }
+        .tabla-honor th { background: rgba(0, 170, 255, 0.2); color: var(--honor-blue); border-bottom: 2px solid var(--honor-blue); }
+        .tabla-moto th { background: rgba(59, 130, 246, 0.2); color: var(--moto-blue); border-bottom: 2px solid var(--moto-blue); }
+        .tabla-zte th { background: rgba(16, 185, 129, 0.2); color: var(--zte-green); border-bottom: 2px solid var(--zte-green); }
+        .tabla-oppo th { background: rgba(34, 197, 94, 0.2); color: var(--oppo-green); border-bottom: 2px solid var(--oppo-green); }
+        .tabla-tecno th { background: rgba(250, 204, 21, 0.2); color: var(--tecno-yellow); border-bottom: 2px solid var(--tecno-yellow); }
+
+        .tabla-modelos td {
+            padding: 12px 15px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #f1f5f9; font-weight: 600; font-size: 16px;
+        }
+        .tabla-modelos tr:nth-child(even) td { background: rgba(255, 255, 255, 0.03); }
+        .tabla-modelos tr:hover td { background: rgba(0, 255, 255, 0.15); color: #fff; cursor: crosshair; }
+        .tabla-xiaomi tr:hover td { background: rgba(255, 103, 0, 0.15); }
+        .tabla-honor tr:hover td { background: rgba(0, 170, 255, 0.15); }
+        .tabla-moto tr:hover td { background: rgba(59, 130, 246, 0.15); }
+        .tabla-zte tr:hover td { background: rgba(16, 185, 129, 0.15); }
+        .tabla-oppo tr:hover td { background: rgba(34, 197, 94, 0.15); }
+        .tabla-tecno tr:hover td { background: rgba(250, 204, 21, 0.15); }
+        
+        .tabla-modelos td:first-child { color: #00ffcc; font-weight: 800; letter-spacing: 1px; }
+        .tabla-modelos td:last-child { color: #ffcc00; font-weight: 800; font-size: 17px; } 
+
+        /* FOOTER */
+        footer {
+            background: rgba(5, 8, 15, 0.95); padding: 25px; text-align: center; border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        footer .links { display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-bottom: 15px; }
+        footer .links a {
+            color: var(--text-main); text-decoration: none; font-weight: bold;
+            transition: color 0.3s; font-size: 14px; text-transform: uppercase;
+        }
+        footer .links a:hover { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <nav>
+        <div class="logo">TEAM SPARROR</div>
+        <ul>
+            <li><button class="btn-nav activo" onclick="cambiarPagina('inicio', this)">Inicio</button></li>
+            <li><button class="btn-nav" onclick="cambiarPagina('herramientas', this)">Herramientas</button></li>
+            <li><button id="nav-modelos" class="btn-nav" onclick="cambiarPagina('modelos', this)">Modelos</button></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- SECCIÓN: INICIO -->
+        <section id="inicio" class="seccion activa">
+            <div class="hero-box">
+                <h1>Bienvenido a Team Sparror</h1>
+                <!-- FECHA ACTUALIZADA -->
+                <span class="date-badge">Última actualización: 27/08/2026</span>
+                <p>Modelos soportados y lista de precios actualizados al 100%. Especialistas en software, recuperación de equipos y herramientas avanzadas.</p>
+                <p style="color: var(--text-main); font-weight: bold;">Explora las nuevas herramientas agregadas. Te serán de gran utilidad para el diagnóstico y soporte.</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: HERRAMIENTAS -->
+        <section id="herramientas" class="seccion">
+            <h2 class="section-title">Herramientas de Diagnóstico</h2>
+            <div class="tools-grid">
+                <!-- ENLACES A LAS WEB INCORPORADOS -->
+                <div class="tool-card" onclick="window.open('https://checatuimei.renteseg.osiptel.gob.pe/consultaIMEI.xhtml', '_blank')">
+                    <h3>1. OSIPTEL</h3>
+                    <p>Consulta de estado de línea y equipos reportados en territorio nacional.</p>
+                </div>
+                <div class="tool-card" onclick="window.open('https://imeicheck.com/es/verificador-imei', '_blank')">
+                    <h3>2. MODELO POR IMEI</h3>
+                    <p>Verificación exacta y detallada del dispositivo a través de su código IMEI.</p>
+                </div>
+                <div class="tool-card" onclick="window.open('https://mifirm.net/imei', '_blank')">
+                    <h3>3. CUENTA MI</h3>
+                    <p>Revisión profunda de estado de bloqueo para equipos de la marca Xiaomi.</p>
+                </div>
+                <div class="tool-card" onclick="window.open('https://samfw.com/imei', '_blank')">
+                    <h3>4. DEUDA SAMSUNG</h3>
+                    <p>Verificación de estado de seguridad KG o bloqueos por financiamiento (Payjoy).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: MODELOS -->
+        <section id="modelos" class="seccion">
+            <h2 class="section-title">Modelos Soportados</h2>
+            <div class="models-grid">
+                <div class="model-btn" onclick="abrirSubPagina('pagina-samsung')">Samsung</div>
+                <div class="model-btn btn-orange" onclick="abrirSubPagina('pagina-xiaomi')">Xiaomi</div>
+                <div class="model-btn btn-blue" onclick="abrirSubPagina('pagina-honor-huawei')">Honor / Huawei</div>
+                <div class="model-btn btn-moto" onclick="abrirSubPagina('pagina-motorola')">Motorola</div>
+                <div class="model-btn btn-zte" onclick="abrirSubPagina('pagina-zte')">ZTE</div>
+                <div class="model-btn btn-oppo" onclick="abrirSubPagina('pagina-oppo')">Oppo</div>
+                <div class="model-btn btn-tecno" onclick="abrirSubPagina('pagina-tecno')">Infinix / Tecno</div>
+                
+                <!-- BOTONES EN CONSTRUCCIÓN -->
+                <div class="model-btn" onclick="abrirSubPagina('pagina-proximamente')">Realme</div>
+                <div class="model-btn" onclick="abrirSubPagina('pagina-proximamente')">LG</div>
+                <div class="model-btn" onclick="abrirSubPagina('pagina-proximamente')">Vivo</div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- NUEVO: PÁGINA EN CONSTRUCCIÓN -->
+        <!-- ============================================== -->
+        <section id="pagina-proximamente" class="seccion">
+            <button class="btn-back" onclick="cambiarPagina('modelos', document.getElementById('nav-modelos'))">
+                ⬅ Volver a Modelos
+            </button>
+            <div class="hero-box" style="margin-top: 30px;">
+                <h1 style="color: var(--cyan); font-size: 38px;">SECCIÓN EN CONSTRUCCIÓN 🚧</h1>
+                <p style="font-size: 20px; font-weight: bold; margin-top: 20px; color: #fff;">
+                    Por favor comuníquese con nosotros para cualquier duda o consulta sobre estas marcas y servicios.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECCIÓN INTERNA: PRECIOS SAMSUNG -->
+        <!-- ============================================== -->
+        <section id="pagina-samsung" class="seccion">
+            <button class="btn-back" onclick="cambiarPagina('modelos', document.getElementById('nav-modelos'))">
+                ⬅ Volver a Modelos
+            </button>
+            
+            <h2 class="section-title">SAMSUNG - SERIE A</h2>
+
+            <div class="alerta-info">
+                <strong>ATENCIÓN:</strong> TODAS LAS CUENTAS GOOGLE SALEN SEA POR NOSOTROS O VÍA ISP. 
+                LA DEUDA POR EL MOMENTO NO TENEMOS, SOLO CLARO. SI USTED GUSTA Y QUIERE SABER SI TIENE DEUDA 
+                VAYA A <strong>HERRAMIENTAS</strong> Y SELECCIONE <strong>DEUDA SAMSUNG</strong>. <br>
+                O PREGUNTA SI NECESITAS ALGO O TIENES ALGUNA DUDA.
+            </div>
+
+            <div class="alerta-roja" style="color: #ffff99; border-color: #ffff00; background: rgba(100,100,0,0.6);">
+                INCLUYEN YAPE<br>
+                <span style="color: #ff6666;">RECORDAR QUE ANDROID 16 NO SALE. POR FAVOR PREGUNTAR SI TIENEN ALGUNA DUDA.</span><br>
+                Menos a10/
+            </div>
+
+            <div class="buscador-container">
+                <input type="text" id="input-samsung" placeholder="🔍 Escribe aquí para buscar tu modelo Samsung (Ej. A54)..." 
+                onkeyup="filtrarCualquierTabla('input-samsung', 'tabla-samsung', 'msg-samsung', 'EL MODELO &quot;{filtro}&quot; NO ESTÁ EN LA LISTA, ASÍ QUE SOLO HAY CUENTA MÁS NO OTROS SERVICIOS.')">
+            </div>
+
+            <table class="tabla-modelos" id="tabla-samsung">
+                <thead>
+                    <tr><th>SERIE A</th><th>Android</th><th>Repair</th><th>Cuenta</th><th>Precio</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>A16</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A06</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A05</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A04/s</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A35</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A34</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A25</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A54</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A53</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A51</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A50</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>15</td></tr>
+                    <tr><td>A32</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A30 / S</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>15</td></tr>
+                    <tr><td>A22</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A20</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>15</td></tr>
+                    <tr><td>A21S</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A14</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A13</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A12</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>20</td></tr>
+                    <tr><td>A10 / S</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>10</td></tr>
+                    <tr><td>A03 / S</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>15</td></tr>
+                    <tr><td>A03 core</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>15</td></tr>
+                    <tr><td>A02</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>10</td></tr>
+                    <tr><td>A01 CORE</td><td>Hasta 15</td><td>Sí</td><td>Todos</td><td>10</td></tr>
+                </tbody>
+            </table>
+
+            <div id="msg-samsung" class="alerta-roja" style="display: none;"></div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECCIÓN INTERNA: PRECIOS XIAOMI -->
+        <!-- ============================================== -->
+        <section id="pagina-xiaomi" class="seccion">
+            <button class="btn-back back-orange" onclick="cambiarPagina('modelos', document.getElementById('nav-modelos'))">
+                ⬅ Volver a Modelos
+            </button>
+            
+            <h2 class="section-title title-xiaomi">XIAOMI / POCO / REDMI</h2>
+
+            <div class="alerta-info alerta-xiaomi">
+                <span>⚡ SERVICIOS XIAOMI ⚡</span><br><br>
+                Las Cuentas Google por Servidor están a <strong>28 Soles</strong> (o preguntar).<br>
+                Las Cuentas Mi están a <strong>80 Soles</strong>.<br>
+                ⭐ <strong>PROMO:</strong> Cuenta Mi + Cuenta Google por <strong>100 Soles</strong>.<br><br>
+                <em>¿Alguna duda o el modelo que buscas no está agregado? Por favor comunícate con nosotros.</em>
+            </div>
+
+            <div class="buscador-container">
+                <input type="text" id="input-xiaomi" class="input-xiaomi" placeholder="🔍 Escribe aquí para buscar tu Xiaomi/Poco (Ej. Note 14)..." 
+                onkeyup="filtrarCualquierTabla('input-xiaomi', 'tabla-xiaomi', 'msg-xiaomi', 'EL MODELO &quot;{filtro}&quot; NO ESTÁ. PREGUNTAR POR FAVOR CUENTA GOOGLE Y CUENTA MI SI TENEMOS.')">
+            </div>
+
+            <table class="tabla-modelos tabla-xiaomi" id="tabla-xiaomi">
+                <thead>
+                    <tr><th>Modelo</th><th>Repair</th><th>Cuenta</th><th>Precio</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Redmi A1</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Redmi A2</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Redmi A3 / X</td><td>Sí</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>Redmi A5</td><td>Sí</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>Redmi 6 / A</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Redmi 7</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Redmi 8</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>Redmi 9 A/C/T</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Redmi 10</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Redmi 10A</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Redmi 10C</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>Redmi 12</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>Redmi 12C</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Redmi 13C</td><td>Sí</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>Redmi 14C</td><td>Sí</td><td>Sí</td><td>20/50</td></tr>
+                    <tr><td>15C</td><td>Sí</td><td>Sí</td><td>50</td></tr>
+                    <tr><td>Note 5 / Pro</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Note 6 / Pro</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Note 7 / Pro</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Note 8</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Note 8 Pro</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Note 9</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Note 9 Pro</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>Note 9S</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>Note 10S</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Note 10 Pro 5G</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>Note 11</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>Note 11S</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>Note 11 / Pro 5G</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>Note 12S</td><td>Sí</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>Note 12</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>Note 12 / Pro / +</td><td>Sí</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>Note 13</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>Note 13 Pro</td><td>Sí</td><td>Sí</td><td>60</td></tr>
+                    <tr><td>Note 13 Pro 5G</td><td>Sí</td><td>Sí</td><td>120 a 130</td></tr>
+                    <tr><td>Note 13 Pro Plus 5G</td><td>Sí</td><td>Sí</td><td>60</td></tr>
+                    <tr><td>Note 14</td><td>Sí</td><td>Sí</td><td>60</td></tr>
+                    <tr><td>Note 14 Pro</td><td>Sí</td><td>Sí</td><td>60</td></tr>
+                    <tr><td>Note 14 Pro 5G</td><td>Sí</td><td>Sí</td><td>90</td></tr>
+                    <tr><td>Note 14 Pro + 5G</td><td>Sí</td><td>Sí</td><td>120 a 130</td></tr>
+                    <tr><td>A partir del Note 15 o superiores</td><td>Sí</td><td>Sí</td><td>90 a 130</td></tr>
+                    <tr><td>11T</td><td>Sí</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>11T 5G</td><td>Sí</td><td>Sí</td><td>50</td></tr>
+                    <tr><td>M3</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>M4 Pro 5G</td><td>Sí</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>Poco X3 NFC</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>Poco X5 Pro</td><td>Sí</td><td>Sí</td><td>50</td></tr>
+                    <tr><td>Poco X6 Pro</td><td>Sí</td><td>Sí</td><td>70</td></tr>
+                    <tr><td>Poco X7 Pro</td><td>Sí</td><td>Sí</td><td>80</td></tr>
+                </tbody>
+            </table>
+            
+            <div id="msg-xiaomi" class="alerta-roja" style="display: none;"></div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECCIÓN INTERNA HONOR / HUAWEI -->
+        <!-- ============================================== -->
+        <section id="pagina-honor-huawei" class="seccion">
+            <button class="btn-back back-blue" onclick="cambiarPagina('modelos', document.getElementById('nav-modelos'))">
+                ⬅ Volver a Modelos
+            </button>
+            
+            <h2 class="section-title title-honor">HONOR / HUAWEI</h2>
+
+            <div class="alerta-info alerta-honor">
+                <strong>NOTA:</strong> LOS NO MENCIONADOS AQUÍ SOLO TENEMOS CUENTA GOOGLE NADA MÁS.
+            </div>
+
+            <div class="buscador-container">
+                <input type="text" id="input-honor" class="input-honor" placeholder="🔍 Escribe aquí para buscar tu modelo Honor/Huawei..." 
+                onkeyup="filtrarCualquierTabla('input-honor', 'tabla-honor', 'msg-honor', 'PARA EL MODELO &quot;{filtro}&quot; NO TENEMOS REPAIR PERO SÍ CUENTA GOOGLE. VARÍA ENTRE 10 A 50 SOLES. PREGUNTAR POR FAVOR.')">
+            </div>
+
+            <table class="tabla-modelos tabla-honor" id="tabla-honor">
+                <thead>
+                    <tr><th>Modelo</th><th>Repair</th><th>Cuenta Google</th><th>Precio</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>X5</td><td>Sí</td><td>Sí</td><td>15 // 25 // 30</td></tr>
+                    <tr><td>X5A</td><td>Sí</td><td>Sí</td><td>15 // 25 // 30</td></tr>
+                    <tr><td>X5B</td><td>Sí</td><td>Sí</td><td>15 // 25 // 30</td></tr>
+                    <tr><td>X5B+</td><td>Sí</td><td>Sí</td><td>15 // 25 // 30</td></tr>
+                    <tr><td>X5C</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>X6</td><td>Sí</td><td>Sí</td><td>15 // 25 // 30</td></tr>
+                    <tr><td>X6A</td><td>Sí</td><td>Sí</td><td>15 // 25 // 30</td></tr>
+                    <tr><td>X6B</td><td>Sí</td><td>Sí</td><td>15 // 25 // 30</td></tr>
+                    <tr><td>X6C</td><td>Sí</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>X7</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>X7A</td><td>Sí</td><td>Sí</td><td>15 // 25 // 30</td></tr>
+                    <tr><td>X8</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>X8A</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>X9</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>Nova Y60</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>200 LITE</td><td>Sí/No</td><td>Sí</td><td>25</td></tr>
+                    <tr><td>90 LITE</td><td>Sí/No</td><td>Sí</td><td>25</td></tr>
+                    <tr><td>90 SMART</td><td>Sí/No</td><td>Sí</td><td>25</td></tr>
+                    <tr><td>X8B</td><td>No</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>X8C</td><td>No</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>X7B</td><td>No</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>X9 5G</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>HONOR 70</td><td>No</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>P20 Lite</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>P Smart 2018</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Y7 2019</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Y7 / 2018</td><td>Sí</td><td>Sí</td><td>5</td></tr>
+                    <tr><td>Y6 / 2018 / 2019</td><td>Sí</td><td>Sí</td><td>5 // 10</td></tr>
+                    <tr><td>Y5 / 2018 / 2019 / Pro</td><td>Sí</td><td>Sí</td><td>5</td></tr>
+                    <tr><td>Magic 5 Lite</td><td>No</td><td>Sí</td><td>15</td></tr>
+                </tbody>
+            </table>
+            
+            <div id="msg-honor" class="alerta-roja" style="display: none;"></div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECCIÓN INTERNA MOTOROLA -->
+        <!-- ============================================== -->
+        <section id="pagina-motorola" class="seccion">
+            <button class="btn-back back-moto" onclick="cambiarPagina('modelos', document.getElementById('nav-modelos'))">
+                ⬅ Volver a Modelos
+            </button>
+            
+            <h2 class="section-title title-moto">MOTOROLA</h2>
+
+            <div class="alerta-info alerta-moto">
+                <strong>EXTRA:</strong> TAMBIÉN REALIZAMOS DESBLOQUEO DE BOOTLOADER PARA EQUIPOS MOTOROLA. CONSULTAR PRECIOS Y DISPONIBILIDAD.
+            </div>
+
+            <div class="buscador-container">
+                <input type="text" id="input-moto" class="input-moto" placeholder="🔍 Escribe aquí para buscar tu modelo Motorola (Ej. G24)..." 
+                onkeyup="filtrarCualquierTabla('input-moto', 'tabla-moto', 'msg-moto', 'PARA EL MODELO &quot;{filtro}&quot; NO TENEMOS REPAIR PERO SÍ CUENTA GOOGLE. VARÍA ENTRE 10 A 50 SOLES. PREGUNTAR POR FAVOR.')">
+            </div>
+
+            <table class="tabla-modelos tabla-moto" id="tabla-moto">
+                <thead>
+                    <tr><th>Modelo</th><th>Android</th><th>Cuenta</th><th>Precio</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>E6I</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>E6S</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>E7</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>E7 POWER</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>E7I</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>E13</td><td>13</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>E13</td><td>14</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>E14</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>E15</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>E20</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>E22</td><td>Todos</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>E22I</td><td>Todos</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>E30</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>G01</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>G04</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>G04S</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>G05</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>G05S</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>G06</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>G8 Power lite</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>G13</td><td>Todos</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>G14</td><td>13</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>G14</td><td>14</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>G15</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>G17</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>G20</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>G22</td><td>Todos</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>G23</td><td>Todos</td><td>Sí</td><td>30</td></tr>
+                    <tr><td>G24 / G24 Power</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                    <tr><td>G35</td><td>Todos</td><td>Sí</td><td>45</td></tr>
+                </tbody>
+            </table>
+            
+            <div id="msg-moto" class="alerta-roja" style="display: none;"></div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECCIÓN INTERNA ZTE -->
+        <!-- ============================================== -->
+        <section id="pagina-zte" class="seccion">
+            <button class="btn-back back-zte" onclick="cambiarPagina('modelos', document.getElementById('nav-modelos'))">
+                ⬅ Volver a Modelos
+            </button>
+            
+            <h2 class="section-title title-zte">ZTE</h2>
+
+            <div class="alerta-info alerta-zte">
+                <strong>OJO:</strong> CUENTA GOOGLE HAY PARA LOS DEMÁS MODELOS QUE NO ESTÁN AQUÍ, PERO SON POR ISP. PREGUNTAR, VARÍA ENTRE 10 A 50 SOLES.
+            </div>
+
+            <div class="buscador-container">
+                <input type="text" id="input-zte" class="input-zte" placeholder="🔍 Escribe aquí para buscar tu modelo ZTE (Ej. Blade A54)..." 
+                onkeyup="filtrarCualquierTabla('input-zte', 'tabla-zte', 'msg-zte', 'EL MODELO &quot;{filtro}&quot; NO ESTÁ EN LA LISTA, SOLO HAY CUENTA GOOGLE PERO ES POR ISP, VARÍA ENTRE 10 A 50. PREGUNTAR POR FAVOR.')">
+            </div>
+
+            <table class="tabla-modelos tabla-zte" id="tabla-zte">
+                <thead>
+                    <tr><th>Modelo</th><th>Repair</th><th>Cuenta</th><th>Precio</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Blade A3</td><td>Sí</td><td>Sí</td><td>5</td></tr>
+                    <tr><td>Blade A5</td><td>Sí</td><td>Sí</td><td>5</td></tr>
+                    <tr><td>Blade A51</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>Blade A34</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>Blade A54</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>Blade A7</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>A72S</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>V2020</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>V20 Smart</td><td>Sí</td><td>Sí</td><td>10</td></tr>
+                    <tr><td>V40 Axon</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>V40 Vita</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>V50 Vita</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>V50 Design</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>V60 Smart</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>A52 Lite</td><td>Sí</td><td>Sí</td><td>8</td></tr>
+                </tbody>
+            </table>
+            
+            <div id="msg-zte" class="alerta-roja" style="display: none;"></div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECCIÓN INTERNA OPPO -->
+        <!-- ============================================== -->
+        <section id="pagina-oppo" class="seccion">
+            <button class="btn-back back-oppo" onclick="cambiarPagina('modelos', document.getElementById('nav-modelos'))">
+                ⬅ Volver a Modelos
+            </button>
+            
+            <h2 class="section-title title-oppo">OPPO</h2>
+
+            <div class="alerta-info alerta-oppo">
+                <strong>OJO:</strong> LOS MODELOS NO SELECCIONADOS EN ESTA LISTA SOLO SALEN POR ISP (VARÍA ENTRE 30 A 50 SOLES).
+            </div>
+
+            <div class="buscador-container">
+                <input type="text" id="input-oppo" class="input-oppo" placeholder="🔍 Escribe aquí para buscar tu modelo OPPO (Ej. Reno 11)..." 
+                onkeyup="filtrarCualquierTabla('input-oppo', 'tabla-oppo', 'msg-oppo', 'EL MODELO &quot;{filtro}&quot; NO ESTÁ EN LA LISTA, SOLO HAY CUENTA GOOGLE, ES POR ISP VARÍA ENTRE 30 A 50 SOLES. PREGUNTAR POR FAVOR.')">
+            </div>
+
+            <table class="tabla-modelos tabla-oppo" id="tabla-oppo">
+                <thead>
+                    <tr><th>Modelo</th><th>Repair</th><th>Cuenta</th><th>Precio</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>A15</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>A16</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>A17</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>A18</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>A38</td><td>Sí</td><td>Sí</td><td>15//30</td></tr>
+                    <tr><td>A54</td><td>Sí</td><td>Sí</td><td>15//30</td></tr>
+                    <tr><td>A57</td><td>Sí</td><td>Sí</td><td>15//30</td></tr>
+                    <tr><td>A58</td><td>Sí</td><td>Sí</td><td>15//30</td></tr>
+                    <tr><td>A77</td><td>Sí</td><td>Sí</td><td>15</td></tr>
+                    <tr><td>A78</td><td>Sí</td><td>Sí</td><td>15//30</td></tr>
+                    <tr><td>A79</td><td>Sí</td><td>Sí</td><td>50</td></tr>
+                    <tr><td>A80</td><td>Sí</td><td>Sí</td><td>50</td></tr>
+                    <tr><td>Reno 5 Lite</td><td>Sí</td><td>Sí</td><td>20</td></tr>
+                    <tr><td>Reno 10</td><td>Sí</td><td>Sí</td><td>50</td></tr>
+                    <tr><td>Reno 11</td><td>Sí</td><td>Sí</td><td>50</td></tr>
+                    <tr><td>Reno 11F</td><td>Sí</td><td>Sí</td><td>50</td></tr>
+                </tbody>
+            </table>
+            
+            <div id="msg-oppo" class="alerta-roja" style="display: none;"></div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECCIÓN INTERNA INFINIX / TECNO -->
+        <!-- ============================================== -->
+        <section id="pagina-tecno" class="seccion">
+            <button class="btn-back back-tecno" onclick="cambiarPagina('modelos', document.getElementById('nav-modelos'))">
+                ⬅ Volver a Modelos
+            </button>
+            
+            <h2 class="section-title title-tecno">INFINIX / TECNO</h2>
+
+            <div class="alerta-info alerta-tecno">
+                <strong>📢 REGLAS DE SERVICIO PARA INFINIX Y TECNO:</strong><br><br>
+                ✅ Salen <strong>TODOS</strong> los modelos estándar a <strong>15 SOLES</strong>.<br>
+                ⚠️ <strong>OJO CON DEUDA / ANTICRACK:</strong> Si tienen esto, NO SALEN. Como máximo sale el "Repair del Segundo".<br>
+                <span style="color: #ffcc00; font-weight: bold;">⚠️ EQUIPOS QUALCOMM: No salen, solo Cuenta pero es por ISP. Preguntar precio.</span>
+            </div>
+
+            <div class="buscador-container">
+                <input type="text" id="input-tecno" class="input-tecno" placeholder="🔍 Escribe aquí cualquier modelo Infinix/Tecno..." 
+                onkeyup="filtrarCualquierTabla('input-tecno', 'tabla-tecno', 'msg-tecno', 'PARA EL MODELO &quot;{filtro}&quot; APLICAN LAS REGLAS DE ARRIBA: REPAIR A 15 SOLES, EXCEPTO QUALCOMM O CON DEUDA. PREGUNTAR POR FAVOR.')">
+            </div>
+
+            <table class="tabla-modelos tabla-tecno" id="tabla-tecno">
+                <thead>
+                    <tr>
+                        <th>Categoría / Condición</th>
+                        <th>Repair</th>
+                        <th>Cuenta</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Todos los Modelos Estándar (MTK/SPD)</td>
+                        <td>Sí</td>
+                        <td>Sí</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td>Equipos con Deuda o Anticrack</td>
+                        <td>Máximo el 2do</td>
+                        <td>Sí</td>
+                        <td>Consultar</td>
+                    </tr>
+                    <tr>
+                        <td>Equipos con Procesador Qualcomm</td>
+                        <td>No</td>
+                        <td>Sí (Por ISP)</td>
+                        <td>Consultar</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div id="msg-tecno" class="alerta-roja" style="display: none;"></div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="links">
+            <a href="#">SamFw</a>
+            <a href="#">MiFirm</a>
+            <a href="#">Osiptel</a>
+            <a href="#">Dimodori</a>
+            <a href="#">Crunchyroll</a>
+        </div>
+        <p style="color: #475569; font-size: 13px;">© 2026 Team Sparror. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Funciones de navegación
+        function cambiarPagina(idPagina, botonClickeado) {
+            let secciones = document.querySelectorAll('.seccion');
+            secciones.forEach(function(seccion) { seccion.classList.remove('activa'); });
+            document.getElementById(idPagina).classList.add('activa');
+
+            let botones = document.querySelectorAll('.btn-nav');
+            botones.forEach(function(btn) { btn.classList.remove('activo'); });
+            if (botonClickeado) { botonClickeado.classList.add('activo'); }
+            
+            // Limpia los buscadores al cambiar
+            if(document.getElementById('input-samsung')) document.getElementById('input-samsung').value = "";
+            if(document.getElementById('input-xiaomi')) document.getElementById('input-xiaomi').value = "";
+            if(document.getElementById('input-honor')) document.getElementById('input-honor').value = "";
+            if(document.getElementById('input-moto')) document.getElementById('input-moto').value = "";
+            if(document.getElementById('input-zte')) document.getElementById('input-zte').value = "";
+            if(document.getElementById('input-oppo')) document.getElementById('input-oppo').value = "";
+            if(document.getElementById('input-tecno')) document.getElementById('input-tecno').value = "";
+            
+            filtrarCualquierTabla('input-samsung', 'tabla-samsung', 'msg-samsung', '');
+            filtrarCualquierTabla('input-xiaomi', 'tabla-xiaomi', 'msg-xiaomi', '');
+            filtrarCualquierTabla('input-honor', 'tabla-honor', 'msg-honor', '');
+            filtrarCualquierTabla('input-moto', 'tabla-moto', 'msg-moto', '');
+            filtrarCualquierTabla('input-zte', 'tabla-zte', 'msg-zte', '');
+            filtrarCualquierTabla('input-oppo', 'tabla-oppo', 'msg-oppo', '');
+            filtrarCualquierTabla('input-tecno', 'tabla-tecno', 'msg-tecno', '');
+        }
+
+        function abrirSubPagina(idPagina) {
+            let secciones = document.querySelectorAll('.seccion');
+            secciones.forEach(function(seccion) { seccion.classList.remove('activa'); });
+            document.getElementById(idPagina).classList.add('activa');
+            
+            let botones = document.querySelectorAll('.btn-nav');
+            botones.forEach(function(btn) { btn.classList.remove('activo'); });
+            document.getElementById('nav-modelos').classList.add('activo');
+            
+            // Limpia los buscadores al abrir subpágina
+            if(document.getElementById('input-samsung')) document.getElementById('input-samsung').value = "";
+            if(document.getElementById('input-xiaomi')) document.getElementById('input-xiaomi').value = "";
+            if(document.getElementById('input-honor')) document.getElementById('input-honor').value = "";
+            if(document.getElementById('input-moto')) document.getElementById('input-moto').value = "";
+            if(document.getElementById('input-zte')) document.getElementById('input-zte').value = "";
+            if(document.getElementById('input-oppo')) document.getElementById('input-oppo').value = "";
+            if(document.getElementById('input-tecno')) document.getElementById('input-tecno').value = "";
+            
+            filtrarCualquierTabla('input-samsung', 'tabla-samsung', 'msg-samsung', '');
+            filtrarCualquierTabla('input-xiaomi', 'tabla-xiaomi', 'msg-xiaomi', '');
+            filtrarCualquierTabla('input-honor', 'tabla-honor', 'msg-honor', '');
+            filtrarCualquierTabla('input-moto', 'tabla-moto', 'msg-moto', '');
+            filtrarCualquierTabla('input-zte', 'tabla-zte', 'msg-zte', '');
+            filtrarCualquierTabla('input-oppo', 'tabla-oppo', 'msg-oppo', '');
+            filtrarCualquierTabla('input-tecno', 'tabla-tecno', 'msg-tecno', '');
+        }
+
+        // ==========================================
+        // SCRIPT INTELIGENTE PARA CUALQUIER TABLA
+        // ==========================================
+        function filtrarCualquierTabla(inputId, tablaId, mensajeId, textoNoEncontrado) {
+            let input = document.getElementById(inputId);
+            if (!input) return; // Si no existe el input (ej. página en construcción), no hace nada
+
+            let filtro = input.value.toUpperCase();
+            let tabla = document.getElementById(tablaId);
+            let filas = tabla.getElementsByTagName("tr");
+            let mensajeError = document.getElementById(mensajeId);
+            
+            let contadorResultados = 0;
+
+            for (let i = 1; i < filas.length; i++) {
+                let columnaModelo = filas[i].getElementsByTagName("td")[0]; 
+                if (columnaModelo) {
+                    let textoModelo = columnaModelo.textContent || columnaModelo.innerText;
+                    
+                    if (textoModelo.toUpperCase().indexOf(filtro) > -1) {
+                        filas[i].style.display = "";
+                        contadorResultados++;
+                    } else {
+                        filas[i].style.display = "none";
+                    }
+                }
+            }
+
+            if (contadorResultados === 0 && filtro !== "") {
+                tabla.style.display = "none"; 
+                mensajeError.style.display = "block"; 
+                let textoFinal = textoNoEncontrado.replace("{filtro}", filtro);
+                mensajeError.innerHTML = textoFinal;
+            } else {
+                tabla.style.display = "table"; 
+                mensajeError.style.display = "none"; 
+            }
+        }
+    </script>
+</body>
+</html>
