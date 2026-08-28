@@ -807,6 +807,9 @@
             botones.forEach(function(btn) { btn.classList.remove('activo'); });
             if (botonClickeado) { botonClickeado.classList.add('activo'); }
             
+            // EL TRUCO MÁGICO: Sube la pantalla al inicio al cambiar de sección
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
             // Limpia los buscadores al cambiar
             if(document.getElementById('input-samsung')) document.getElementById('input-samsung').value = "";
             if(document.getElementById('input-xiaomi')) document.getElementById('input-xiaomi').value = "";
@@ -834,6 +837,9 @@
             botones.forEach(function(btn) { btn.classList.remove('activo'); });
             document.getElementById('nav-modelos').classList.add('activo');
             
+            // EL TRUCO MÁGICO: Sube la pantalla al inicio al abrir un modelo
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
             // Limpia los buscadores al abrir subpágina
             if(document.getElementById('input-samsung')) document.getElementById('input-samsung').value = "";
             if(document.getElementById('input-xiaomi')) document.getElementById('input-xiaomi').value = "";
@@ -852,12 +858,9 @@
             filtrarCualquierTabla('input-tecno', 'tabla-tecno', 'msg-tecno', '');
         }
 
-        // ==========================================
-        // SCRIPT INTELIGENTE PARA CUALQUIER TABLA
-        // ==========================================
         function filtrarCualquierTabla(inputId, tablaId, mensajeId, textoNoEncontrado) {
             let input = document.getElementById(inputId);
-            if (!input) return; // Si no existe el input (ej. página en construcción), no hace nada
+            if (!input) return; 
 
             let filtro = input.value.toUpperCase();
             let tabla = document.getElementById(tablaId);
